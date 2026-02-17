@@ -1,8 +1,8 @@
-# Project Go API Books
+# Codebase Golang
 
 This is a Go boilerplate/codebase project designed for learning and rapid API development.
 
-This repository follows a clean architecture pattern and Domain-Driven Design (DDD) principles, inspired by established Go codebase templates: [1](https://github.com/fahminlb33/devoria1-wtc-backend) [2](https://github.com/dimaskiddo/codebase-go-rest).
+This repository follows a clean architecture pattern and Domain-Driven Design (DDD) principles, inspired by established Go codebase templates: [1](https://github.com/fahminlb33/devoria1-wtc-backend).
 
 ## Features
 
