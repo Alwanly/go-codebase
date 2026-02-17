@@ -1,9 +1,6 @@
 run:
   timeout: 5m
   tests: false
-  include:
-    - internal
-    - pkg
 
 linters:
   enable:
