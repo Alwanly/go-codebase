@@ -1,8 +1,10 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -50,5 +52,61 @@ func LoadConfig(configName string) (GlobalConfig, error) {
 		return GlobalConfig{}, err
 	}
 
+	// validate config
+	if err := c.Validate(); err != nil {
+		return GlobalConfig{}, fmt.Errorf("config validation failed: %w", err)
+	}
+
 	return c, nil
+}
+
+// Validate validates the configuration
+func (c *GlobalConfig) Validate() error {
+	var errs []string
+
+	// Validate required fields
+	if c.ServiceName == "" {
+		errs = append(errs, "SERVICE_NAME is required")
+	}
+
+	if c.Port <= 0 {
+		errs = append(errs, "PORT must be greater than 0")
+	}
+
+	if c.PostgresURI == "" {
+		errs = append(errs, "POSTGRES_URI is required")
+	}
+
+	// Validate authentication config if JWT is used
+	if c.JwtIssuer == "" {
+		errs = append(errs, "JWT_ISSUER is required")
+	}
+
+	if c.JwtAudience == "" {
+		errs = append(errs, "JWT_AUDIENCE is required")
+	}
+
+	if c.JwtExpirationTime <= 0 {
+		errs = append(errs, "JWT_EXPIRATION must be greater than 0")
+	}
+
+	if c.JwtRefreshTime <= 0 {
+		errs = append(errs, "JWT_REFRESH_EXPIRATION must be greater than 0")
+	}
+
+	// Warn about missing keys in production (but don't fail)
+	if c.Environment == "production" {
+		if c.PrivateKey == "" {
+			errs = append(errs, "PRIVATE_KEY should be set in production")
+		}
+		if c.PublicKey == "" {
+			errs = append(errs, "PUBLIC_KEY should be set in production")
+		}
+	}
+
+	if len(errs) > 0 {
+		return errors.New(strings.Join(errs, "; "))
+	}
+
+	return nil
 }

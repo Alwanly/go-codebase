@@ -16,8 +16,8 @@ import (
 	"go.uber.org/zap"
 
 	_ "github.com/Alwanly/go-codebase/api"
-	book_handler "github.com/Alwanly/go-codebase/internal/book/handler"
-	user_handler "github.com/Alwanly/go-codebase/internal/user/handler"
+	book_handler "github.com/Alwanly/go-codebase/internal/example/handler"
+	"github.com/Alwanly/go-codebase/pkg/health"
 )
 
 type (
@@ -75,7 +75,14 @@ func Bootstrap(d *AppDeps) *deps.App {
 		Validator: v,
 	}
 	database.MigrateIfNeed(inst.DB.Gorm)
-	user_handler.NewHandler(inst)
+
+	// Register health check endpoints
+	healthHandler := health.NewHandler(d.Config.ServiceName, d.Config.ServiceVersion)
+	e.Get("/health", healthHandler.Check)
+	e.Get("/ready", healthHandler.Readiness)
+	e.Get("/live", healthHandler.Liveness)
+
+	// Register business handlers
 	book_handler.NewHandler(inst)
 
 	return inst

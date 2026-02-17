@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"github.com/Alwanly/go-codebase/internal/book/repository"
-	"github.com/Alwanly/go-codebase/internal/book/schema"
-	"github.com/Alwanly/go-codebase/internal/book/usecase"
+	"github.com/Alwanly/go-codebase/internal/example/repository"
+	"github.com/Alwanly/go-codebase/internal/example/schema"
+	"github.com/Alwanly/go-codebase/internal/example/usecase"
 	"github.com/Alwanly/go-codebase/pkg/binding"
 	"github.com/Alwanly/go-codebase/pkg/deps"
 	"github.com/Alwanly/go-codebase/pkg/logger"

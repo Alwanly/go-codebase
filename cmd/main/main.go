@@ -31,11 +31,11 @@ import (
 // @name Authorization
 
 func main() {
-
 	// load config
 	cfg, err := config.LoadConfig(".env")
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "Failed to load configuration: %v\n", err)
+		os.Exit(1)
 	}
 
 	// Setup dependencies
@@ -43,7 +43,11 @@ func main() {
 		logger.WithPrettyPrint(),
 	)
 	l := logger.WithID(globalLogger, "server", "main")
-	l.Info("Starting application")
+	l.Info("Starting application",
+		zap.String("service", cfg.ServiceName),
+		zap.String("version", cfg.ServiceVersion),
+		zap.String("environment", cfg.Environment),
+	)
 
 	// Setup database
 	dbConfig := database.DBServiceOpts{
@@ -56,8 +60,8 @@ func main() {
 
 	db, err := database.NewPostgres(&dbConfig)
 	if err != nil {
-		l.Error("Cannot create database", zap.Error(err))
-		panic(err)
+		l.Error("Failed to initialize database", zap.Error(err))
+		os.Exit(1)
 	}
 
 	// Setup redis
@@ -65,10 +69,10 @@ func main() {
 		Logger:   globalLogger,
 		RedisURI: &cfg.RedisURI,
 	}
-	redis, err := redis.NewRedis(&redisConfig)
+	redisClient, err := redis.NewRedis(&redisConfig)
 	if err != nil {
-		l.Error("Cannot create redis", zap.Error(err))
-		panic(err)
+		l.Error("Failed to initialize Redis", zap.Error(err))
+		os.Exit(1)
 	}
 
 	// Setup middleware
@@ -87,8 +91,8 @@ func main() {
 
 	authMiddleware := middleware.NewAuthMiddleware(jwtConfig, basicAuthConfig)
 	if authMiddleware == nil {
-		l.Error("Cannot create auth middleware")
-		panic("Cannot create auth middleware")
+		l.Error("Failed to create auth middleware")
+		os.Exit(1)
 	}
 
 	// Create app
@@ -96,7 +100,7 @@ func main() {
 		Config: &cfg,
 		Logger: globalLogger,
 		DB:     db,
-		Redis:  redis,
+		Redis:  redisClient,
 		Auth:   authMiddleware,
 	})
 

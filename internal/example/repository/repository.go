@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Alwanly/go-codebase/internal/book/schema"
+	"github.com/Alwanly/go-codebase/internal/example/schema"
 	"github.com/Alwanly/go-codebase/model"
 	"github.com/Alwanly/go-codebase/pkg/database"
 	"github.com/Alwanly/go-codebase/pkg/redis"

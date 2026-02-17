@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/Alwanly/go-codebase/config"
-	"github.com/Alwanly/go-codebase/internal/book/repository"
-	"github.com/Alwanly/go-codebase/internal/book/schema"
+	"github.com/Alwanly/go-codebase/internal/example/repository"
+	"github.com/Alwanly/go-codebase/internal/example/schema"
 	"github.com/Alwanly/go-codebase/model"
 	"github.com/Alwanly/go-codebase/pkg/contract"
 	"github.com/Alwanly/go-codebase/pkg/wrapper"
