@@ -12,37 +12,15 @@
       "processId": 0
     },
     {
-      "name": "Launch Package Identity",
+      "name": "Launch Package Codebase",
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/cmd/identity",
+      "program": "${workspaceFolder}/cmd/main",
       "cwd": "${workspaceFolder}",
       "env": {
         "PORT": "9900"
       }
-    },
-    {
-      "name": "Launch Package Core",
-      "type": "go",
-      "request": "launch",
-      "mode": "auto",
-      "program": "${workspaceFolder}/cmd/core",
-      "cwd": "${workspaceFolder}",
-      "env": {
-        "PORT": "9901"
-      }
-    },
-    {
-      "name": "Launch Package Payment",
-      "type": "go",
-      "request": "launch",
-      "mode": "auto",
-      "program": "${workspaceFolder}/cmd/payment",
-      "cwd": "${workspaceFolder}",
-      "env": {
-        "PORT": "9902"
-      }
-    },
+    }
   ]
 }%  
